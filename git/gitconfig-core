@@ -3,6 +3,28 @@
 	email = dario.rehman@gmail.com
 [pull]
 	rebase = false
+[core]
+	editor = vim
+	autocrlf = input
+[credential]
+	helper = osxkeychain
+# Let the gh CLI serve credentials for github.com and gists. The empty helper
+# clears any inherited value first, so gh is the only one consulted.
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[diff]
+	tool = intellij
+[difftool "intellij"]
+	cmd = /Applications/IntelliJ\\ IDEA.app/Contents/MacOS/idea diff $(cd $(dirname $LOCAL) && pwd)/$(basename $LOCAL) $(cd $(dirname $REMOTE) && pwd)/$(basename $REMOTE)
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 [alias]
   co=checkout
   ci=commit
