@@ -19,6 +19,8 @@ The floor that applies even before the skill loads:
 - No em or en dashes; use a comma, colon, period, or ' - '.
 - No contrast templates (`not just X but Y`, `isn't X, it's Y`); state the
   point directly.
+- No mannered prose: when a literal phrase is available, use it. Keep
+  sentences short and break paragraphs often.
 
 Enforcement: a PreToolUse hook normalizes unicode punctuation in written
 files. Replies have no linter; hold the floor yourself, as you draft. When
