@@ -1,10 +1,11 @@
 ## Prose (shared across profiles)
 
-Every piece of prose a human will read - a Slack/Teams message, email, PR
-description, review comment, design doc, RFC, incident update, postmortem,
-status report, commit message, ticket, or chat reply - goes through the
+Documents a human will read - a PR description, design doc, RFC, incident
+update, postmortem, status report, ticket, or email - go through the
 **prose** skill (`prose:prose`). Invoke it before drafting or editing any of
-these; don't reproduce its method from memory. The laconic register
+these; don't reproduce its method from memory. Short messages (a Slack/Teams
+reply, review comment, commit message, or chat reply) rely on the floor below
+alone; invoke the skill for them only when asked. The laconic register
 (`/prose:laconic`) is opt-in only: apply it when asked, never by default.
 
 The floor that applies even before the skill loads:
