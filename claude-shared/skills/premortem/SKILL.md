@@ -1,6 +1,6 @@
 ---
 name: premortem
-description: "Before shipping a change, design, or rollout: write the incident review from six months in the future, as if it already failed. Mechanism-complete failure narratives with the cheapest pre-ship check for each."
+description: "Run a requested premortem of a change, design, or rollout using concrete failure paths and preventive checks."
 disable-model-invocation: true
 ---
 
@@ -52,7 +52,7 @@ down with exactly these five fields:
 
 ### 3. Rank and cut
 
-Emit 2 to 4 narratives ordered by plausibility. Rank by argument, not by
+Emit up to four supported narratives ordered by plausibility. Rank by argument, not by
 number: say what makes the top one more likely than the next. Cut anything
 whose propagation field you could not fill with real names - and record the
 cuts in one line each ("considered and cut: X, because Y"). The cut list is

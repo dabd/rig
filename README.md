@@ -120,14 +120,32 @@ Work machines get those overlay files from a separate private repo with its own
 
 ### Shared agent policy
 
-Agent policy used by every profile, work and personal, lives in this repo:
-`claude-shared/prose-rules.md` (each Claude profile's CLAUDE.md includes it)
-and `codex/skills/` (each codex profile symlinks it). The rule: this repo
-holds shared, personal-safe policy; the work overlay holds work-only config.
-The overlay may symlink into this repo (bootstrap pins it at `~/rig`),
-never the reverse. Pick the mechanism deliberately: an `@`-include when a
-profile wraps shared content with its own additions, a symlink when the file
-must be identical everywhere.
+`agent-policy/common.md` and `claude-shared/prose-rules.md` hold shared policy.
+`agent-policy/personal.md` supplies personal paths; `claude.md` and `codex.md`
+contain host-specific guidance. `bin/render-agent-policy.py` composes these into
+the checked-in personal `CLAUDE.md` and `AGENTS.md`. With `--work-repo <path>`,
+it also renders work profiles using that private repo's `agent-policy/work.md`.
+Generated files are complete instructions, so neither host needs to interpret
+the other's include syntax. Edit the sources and rerender; `--check` detects drift.
+
+`claude-shared/skills/` is the canonical shared skill library despite its
+historical name. `agent-policy/skills.json` lists shared and host-specific
+skills. Codex's source directory links to the shared bodies and adds its
+orchestration skill. Explicit-only skills carry both Claude frontmatter and
+Codex `agents/openai.yaml` policy. Larger skills route to optional references.
+
+`bin/install-agent-skills.py` previews installation; `--apply` installs and
+`--check` verifies it. Bootstrap invokes it after home-manager. The work
+overlay supplies its own skill manifest and sources and invokes it with
+`--work-repo`. Work integrations belong only in work profiles, not in the
+globally discovered `~/.agents/skills`. Replaced links/directories and retired
+global entries are moved to `~/.local/state/rig-skill-backups/<timestamp>/`,
+preserving their home-relative paths. Unlisted entries are left alone.
+
+The prose plugin is installed normally in each profile. Do not create aliases
+to a versioned plugin-cache directory. All shared policy remains personal-safe;
+work-specific tools and configuration stay in the private overlay. The overlay
+may reference this repo (bootstrap pins it at `~/rig`), never the reverse.
 
 Portability caveat: some tracked agent config (`claude/settings.json`,
 `codex/hooks.json`) contains machine-absolute home paths; edit those when

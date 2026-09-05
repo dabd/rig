@@ -1,0 +1,139 @@
+[
+  {
+    "id": 1,
+    "name": "cross-ref-mismatch",
+    "description": "File A says '5 endpoints', File B lists 6. Should find and fix the count inconsistency.",
+    "fixture": "cross-ref-mismatch",
+    "prompt": "/audit-docs",
+    "assertions": {
+      "behavioral": [
+        "Identifies the count mismatch (api-overview.md says 5, endpoints.md lists 6)",
+        "Classifies it as Medium or higher severity",
+        "Fixes the inconsistency (updates '5' to '6' in api-overview.md)",
+        "Re-audits after fixing and reports a clean pass"
+      ],
+      "output_contains": ["5 endpoints", "6 endpoints", "mismatch"],
+      "output_contains_any": [
+        "Cycle 2",
+        "cycle 2",
+        "Pass 2",
+        "pass 2",
+        "second audit",
+        "re-audit",
+        "Cycles run: 2",
+        "clean pass"
+      ],
+      "min_cycles": 2,
+      "files_modified": ["api-overview.md"],
+      "files_not_modified": ["endpoints.md"]
+    }
+  },
+  {
+    "id": 2,
+    "name": "broken-link",
+    "description": "References deployment-config.md and security/auth-patterns.md which don't exist. Should report but not invent files.",
+    "fixture": "broken-link",
+    "prompt": "/audit-docs",
+    "assertions": {
+      "behavioral": [
+        "Identifies that deployment-config.md does not exist",
+        "Identifies that security/auth-patterns.md does not exist",
+        "Does NOT create the missing files (reports the issue, may update the reference text)",
+        "Classifies broken references as Medium or higher",
+        "Runs at least 2 audit cycles (finds issue, fixes reference text, re-audits)"
+      ],
+      "output_contains": ["deployment-config.md", "security/auth-patterns.md"],
+      "output_contains_any": [
+        "Cycle 2",
+        "cycle 2",
+        "Pass 2",
+        "pass 2",
+        "second audit",
+        "re-audit",
+        "Cycles run: 2",
+        "clean pass"
+      ],
+      "min_cycles": 2,
+      "files_created": [],
+      "files_modified": ["architecture.md"],
+      "files_not_created": ["deployment-config.md", "security/auth-patterns.md"]
+    }
+  },
+  {
+    "id": 3,
+    "name": "type-drift",
+    "description": "types.md defines 'WebhookPayload', consumer.md uses 'WebHookPayload' (capital H). Also uses 'PaymentResult' instead of 'PaymentResponse'.",
+    "fixture": "type-drift",
+    "prompt": "/audit-docs",
+    "assertions": {
+      "behavioral": [
+        "Identifies WebhookPayload vs WebHookPayload naming inconsistency",
+        "Identifies PaymentResult vs PaymentResponse type mismatch",
+        "Classifies type mismatches as Medium or higher",
+        "Normalizes to the name defined in types.md (the source of truth)",
+        "Runs at least 2 audit cycles (fixes then re-audits)"
+      ],
+      "output_contains": [
+        "WebhookPayload",
+        "WebHookPayload",
+        "PaymentResponse",
+        "PaymentResult"
+      ],
+      "output_contains_any": [
+        "Cycle 2",
+        "cycle 2",
+        "Pass 2",
+        "pass 2",
+        "second audit",
+        "re-audit",
+        "Cycles run: 2",
+        "clean pass"
+      ],
+      "min_cycles": 2,
+      "files_modified": ["consumer.md"],
+      "files_not_modified": ["types.md"]
+    }
+  },
+  {
+    "id": 4,
+    "name": "clean-pass",
+    "description": "No real issues. Should complete in 1 cycle with no edits.",
+    "fixture": "clean-pass",
+    "prompt": "/audit-docs",
+    "assertions": {
+      "behavioral": [
+        "Completes in exactly 1 audit cycle",
+        "Reports zero Critical, High, or Medium issues",
+        "Does NOT edit any files",
+        "May report Low issues but does not fix them"
+      ],
+      "output_contains": ["clean pass"],
+      "output_contains_any": ["no Critical", "0 Critical", "zero Critical"],
+      "max_cycles": 1,
+      "files_modified": []
+    }
+  },
+  {
+    "id": 5,
+    "name": "low-only",
+    "description": "Only style issues (inconsistent heading case, minor formatting). Should report but NOT fix.",
+    "fixture": "low-only",
+    "prompt": "/audit-docs",
+    "assertions": {
+      "behavioral": [
+        "Reports Low-severity issues (heading case, style)",
+        "Does NOT edit any files (Low issues are not fixed per rules)",
+        "Completes in 1 cycle (no Med+ issues means clean pass)",
+        "Explicitly states Low issues remain per policy"
+      ],
+      "output_contains": ["Low issues remaining"],
+      "output_contains_any": [
+        "not addressed per policy",
+        "will not be fixed",
+        "not fixed per policy"
+      ],
+      "max_cycles": 1,
+      "files_modified": []
+    }
+  }
+]

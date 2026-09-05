@@ -1,6 +1,6 @@
 ---
 name: fencing
-description: Use before any edit that deletes, disables, bypasses, skips, or simplifies away existing behavior whose purpose is not obvious - guards, retries, sleeps, caps, magic numbers, special cases, protocol layers. This includes optimization requests that route around existing machinery. Recovers why the code exists from git history before you remove it.
+description: Recover intent before removing or bypassing existing behavior whose purpose is unclear, including optimization around guards.
 ---
 
 # fencing
@@ -52,11 +52,11 @@ constraint still alive.
    - KEEP: constraint alive; cite it.
    - REMOVE: the reason is recovered and it no longer holds. Two shapes:
      the constraint expired (cite what expired and when), or it never
-     existed - accidental duplication, dead on arrival (cite the
-     introducing commit showing no reason was recorded).
+     existed - accidental duplication or dead on arrival (cite evidence of
+     redundancy or unreachability; a missing commit explanation is insufficient).
    - REMOVE WITH EYES OPEN: no reason recoverable. Before settling here,
      hypothesize: what must have been true for a competent engineer to
-     write this? Rank the two or three candidate reasons (performance,
+     write this? Investigate plausible candidate reasons (performance,
      transplanted idiom, workaround for a since-fixed bug, platform
      quirk) and spend one search on each - a hypothesis often names the
      archive the reason lives in. If they all come up empty, say so
@@ -72,22 +72,23 @@ gates what happens next:
 
 - Fast-path REMOVE: make the edit; state the recovered reason and its
   expiry in one line so the review trail carries it.
-- KEEP: do not make the edit this turn, and do not hand over an
-  apply-ready diff. Present the constraint with its citations and the
-  concrete failure the edit would reintroduce, then stop. Proceed only on
-  an explicit go given AFTER the verdict; instructions issued before it
-  do not count, since they were given without this information.
-- REMOVE WITH EYES OPEN: present what was searched and the canary. If the
-  canary is cheap (a test to add), add it and proceed. If it is expensive
-  (a load or soak run), stop and put the choice to the user.
+- KEEP: explain the live constraint and the failure a bare removal would
+  cause. Preserve that constraint in an alternative implementation when this
+  fulfills the authorized task. Earlier informed authorization remains valid.
+  Ask only when the evidence introduces a material consequence or choice
+  outside that authorization; continue independent preparation meanwhile.
+- REMOVE WITH EYES OPEN: state the uncertainty and select verification that
+  could expose the suspected regression. Proceed with reversible work within
+  the authorized scope. Ask if completion needs new authority, unavailable
+  evidence, or a materially different risk decision.
 
 The verdict leads the response; it is never buried under a diff.
 
 ## Fast path
 
 Reason recovered in one blame: answer in three lines or fewer. Clearly dead:
-proceed with the edit. Clearly alive: decline it, same three lines - the
-fast path shortens the report, never the interaction contract. The full
+proceed with the edit. Clearly alive: preserve the constraint or explain the
+new decision needed, using the interaction contract above. The full
 report is for genuinely murky fences, contested verdicts, and callers who
 asked for the trail.
 
@@ -113,10 +114,11 @@ Three priors that bound the verdict:
 - Replacement semantics: a verdict that endorses replacing API A with API
   B states the A-vs-B semantic difference from the library's own
   documentation, not from memory.
-- Hot-path cap: on the hot path of the service's core function (code that
-  runs per request or per item, not at startup), "no reason recoverable"
-  caps at REMOVE WITH EYES OPEN, and the canary must be a load or soak
-  run, not a unit test.
+- Hot-path uncertainty: an unrecovered reason remains REMOVE WITH EYES OPEN.
+  Choose the canary by failure mechanism: a deterministic regression test for
+  semantics, a focused benchmark for overhead, or load/soak verification for
+  contention, saturation, or failures that need sustained traffic. Hot-path
+  placement alone does not require a soak run.
 
 ## Anti-patterns
 

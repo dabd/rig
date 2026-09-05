@@ -1,6 +1,6 @@
 ---
 name: edgeledger
-description: Enumerate the edge cases of a function, API, or format by structural family - each with expected behavior per the spec, where it is tested today (or NOWHERE), and a proposed test name.
+description: Audit edge cases and missing contract or test coverage for a function, API, or format when explicitly requested.
 disable-model-invocation: true
 ---
 

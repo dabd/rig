@@ -13,6 +13,10 @@ result-*
 # macOS
 .DS_Store
 
+# Python helpers and verification
+__pycache__/
+*.pyc
+
 # IDE / editor metadata
 .idea/
 

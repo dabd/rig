@@ -29,10 +29,14 @@ zsh_custom="$HOME/.oh-my-zsh/custom"
 [ -d "$zsh_custom/plugins/zsh-autosuggestions" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$zsh_custom/plugins/zsh-autosuggestions"
 [ -d "$zsh_custom/plugins/zsh-syntax-highlighting" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$zsh_custom/plugins/zsh-syntax-highlighting"
 
+python3 "$repo/bin/render-agent-policy.py"
+
 if command -v home-manager >/dev/null 2>&1; then
   home-manager switch --flake "$HOME/rig#default" --impure
 else
   nix run home-manager/master -- switch --flake "$HOME/rig#default" --impure
 fi
+
+python3 "$repo/bin/install-agent-skills.py" --apply
 
 echo "done. work machines: clone the work overlay repo and run its install.sh."

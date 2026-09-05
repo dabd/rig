@@ -1,0 +1,29 @@
+{
+  "shared": [
+    "agent-supervisor",
+    "antithesize",
+    "audit-docs",
+    "blastradius",
+    "code-simplifier",
+    "dimensionalize",
+    "edgeledger",
+    "eli5",
+    "excavate",
+    "fencing",
+    "handlize",
+    "inductify",
+    "invariantize",
+    "luthier",
+    "metaphorize",
+    "negspace",
+    "pr-lint",
+    "premortem",
+    "rhetoricize",
+    "rhyme",
+    "synthesize"
+  ],
+  "claude_only": [],
+  "codex_only": [
+    "orchestrate"
+  ]
+}

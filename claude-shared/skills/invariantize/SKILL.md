@@ -1,6 +1,6 @@
 ---
 name: invariantize
-description: Extract the invariants a module or design depends on - what must stay true for it to keep working - each with where it is enforced today (or NOWHERE) and a proposed check as actual code or a command.
+description: Audit a module or design's invariants and their enforcement when explicitly requested.
 disable-model-invocation: true
 ---
 

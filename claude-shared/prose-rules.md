@@ -1,12 +1,12 @@
 ## Prose (shared across profiles)
 
-Documents a human will read - a PR description, design doc, RFC, incident
-update, postmortem, status report, ticket, or email - go through the
-**prose** skill (`prose:prose`). Invoke it before drafting or editing any of
-these; don't reproduce its method from memory. Short messages (a Slack/Teams
-reply, review comment, commit message, or chat reply) rely on the floor below
-alone; invoke the skill for them only when asked. The laconic register
-(`/prose:laconic`) is opt-in only: apply it when asked, never by default.
+Use the installed **prose** skill for substantial engineering drafts or edits
+where its genre guidance helps: PR descriptions, design documents, incident
+reports, tickets, and email. Typo fixes and short messages (chat replies,
+review comments, and commit messages) use the floor below; load a writing
+skill for those only when requested. The laconic and aggressive compression
+registers are opt-in. If the plugin is unavailable, use the floor and report
+the missing dependency only when it prevents an explicitly requested workflow.
 
 The floor that applies even before the skill loads:
 
@@ -23,6 +23,6 @@ The floor that applies even before the skill loads:
 - No mannered prose: when a literal phrase is available, use it. Keep
   sentences short and break paragraphs often.
 
-Enforcement: a PreToolUse hook normalizes unicode punctuation in written
-files. Replies have no linter; hold the floor yourself, as you draft. When
+Some profiles normalize unicode punctuation in written files with a hook.
+Replies have no linter; hold the floor yourself as you draft. When
 you name a banned term rather than use it, put it in backticks.

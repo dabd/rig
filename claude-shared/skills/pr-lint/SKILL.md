@@ -1,6 +1,6 @@
 ---
 name: pr-lint
-description: Lint a pull request description against its diff - missing genre slots, silent riders in the code, and claims the diff does not support. Point it at a PR number/URL, or run bare on the working diff before publishing.
+description: Check a PR description against its diff for omissions and unsupported claims when explicitly requested.
 disable-model-invocation: true
 ---
 
@@ -63,9 +63,10 @@ knows the fact.
 Null output is a pass, not a failure to dig: "description is complete and
 consistent with the diff" ends the lint. Do not manufacture findings.
 
-The user accepts or rejects each row. Repairs are folded into the draft and
-then go through a conservative prose pass; this skill does not rewrite the
-description itself.
+For a review request, return findings and proposed sentences. If the user has
+also authorized fixing the description, apply supported repairs to the draft
+without requiring acceptance of each row. Publishing follows the user's
+existing authorization; the lint itself grants none.
 
 ## Anti-patterns
 
