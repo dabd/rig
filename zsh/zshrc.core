@@ -54,27 +54,6 @@ function claude-personal {
   command claude "$@"
 }
 
-# Personal profile on Kimi K3 via the Kimi Code subscription endpoint.
-# Key comes from the Kimi Code Console (kimi.com/code/console) and lives in the
-# personal 1Password account (vault Personal, item "Kimi Code").
-function claude-kimi {
-  local key
-  key="$(op read --account my.1password.com 'op://Personal/Kimi Code/credential' 2>/dev/null)" || {
-    echo "claude-kimi: could not read op://Personal/Kimi Code/credential (account my.1password.com)" >&2
-    echo "Create it: 1Password (personal account) -> New Item -> API Credential -> title 'Kimi Code', paste the key from kimi.com/code/console into the credential field." >&2
-    return 1
-  }
-  CLAUDE_CONFIG_DIR="$HOME/.claude-personal" \
-  CODEX_HOME="$HOME/.codex-personal" \
-  CLAUDE_CODE_USE_BEDROCK=0 \
-  ANTHROPIC_BASE_URL="https://api.kimi.com/coding/" \
-  ANTHROPIC_API_KEY="$key" \
-  ANTHROPIC_MODEL="k3" \
-  CLAUDE_CODE_SUBAGENT_MODEL="k3" \
-  CLAUDE_CODE_EFFORT_LEVEL="high" \
-  command claude --model k3 "$@"
-}
-
 # Find the real codex binary, skipping the ~/.local/bin shim.
 _codex_real() {
   local dir candidate
