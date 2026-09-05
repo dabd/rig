@@ -22,8 +22,7 @@ def plan(root, home, work):
     config = manifest(root / "agent-policy/skills.json")
     shared = config["shared"]
     links = {}
-    profiles = [(".claude-personal", "claude"), (".claude-openrouter", "claude"),
-                (".codex-personal", "codex")]
+    profiles = [(".claude-personal", "claude"), (".codex-personal", "codex")]
     if work:
         profiles.extend([(".claude", "claude"), (".codex", "codex")])
     for profile, host in profiles:

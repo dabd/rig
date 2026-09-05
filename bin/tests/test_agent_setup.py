@@ -77,6 +77,10 @@ class InstallationTests(unittest.TestCase):
             self.run_install()
         self.assertEqual(legacy.read_text(), "must survive\n")
 
+    def test_retired_openrouter_profile_is_not_created(self):
+        self.run_install()
+        self.assertFalse((self.home / ".claude-openrouter").exists())
+
     def test_directory_symlinks_do_not_mutate_source(self):
         profile = self.home / ".claude-personal/skills"
         profile.parent.mkdir(parents=True)
