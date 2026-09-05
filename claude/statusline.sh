@@ -1,6 +1,6 @@
 #!/bin/bash
 # Claude Code status line. Reads the session JSON on stdin and prints one
-# colored line: dir . git:(branch) . Model . effort . N% ctx . provider . $cost
+# colored line: dir . git:(branch) . Model . effort . N% ctx . profile . provider . $cost
 # Mirrors the robbyrussell PS1 (cyan dir, blue/red git) then adds session info.
 input=$(cat)
 
@@ -21,6 +21,13 @@ cost=$(j '.cost.total_cost_usd')
 # between the two OAuth cases. Order matters: Bedrock wins over a base URL, and
 # a non-Anthropic base URL wins over a bare API key.
 cfg="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+
+# Profile identity is independent of the provider and the working directory.
+case "${cfg%/}" in
+  */.claude-personal|*/.claude-openrouter) profile="personal" ;;
+  */.claude) profile="work" ;;
+  *) profile=$(basename "${cfg%/}") ;;
+esac
 
 if [ "$CLAUDE_CODE_USE_BEDROCK" = "1" ]; then
   prov="bedrock"
@@ -73,7 +80,13 @@ case "$prov" in
   personal|enterprise) pcol=$MAGENTA ;;
   *)                   pcol=$RED ;;
 esac
-add "${pcol}${prov}${RESET}"
+# Always show the profile. Keep metered-provider detail without duplicating
+# the personal subscription label or using enterprise as a profile name.
+add "${MAGENTA}${profile}${RESET}"
+case "$prov" in
+  personal|enterprise) : ;;
+  *) add "${pcol}${prov}${RESET}" ;;
+esac
 
 # Session cost, which Claude Code derives from Anthropic list pricing. That is
 # roughly right on Bedrock, notional against plan limits on a subscription, and

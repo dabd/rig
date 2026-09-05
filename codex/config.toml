@@ -1,6 +1,10 @@
 model = "gpt-5.6-sol"
 model_reasoning_effort = "xhigh"
 approvals_reviewer = "auto_review"
+
+[features.context_management]
+experimental_mode = true
+
 [projects."/Users/dario.abdulrehman/projects/mystuff"]
 trust_level = "trusted"
 
