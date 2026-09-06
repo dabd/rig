@@ -1,4 +1,4 @@
-{ config, pkgs, username, homeDirectory, ... }:
+{ config, lib, pkgs, username, homeDirectory, ... }:
 {
   # username/homeDirectory are supplied per-machine by the flake's mkHome.
   home.username = username;
@@ -90,21 +90,26 @@
     };
   };
 
-  # Agent CLIs rewrite these at runtime (model saves, hook edits), so they must
-  # stay writable: out-of-store symlinks into the repo working copy. Requires
-  # the repo at ~/rig and --impure (both already required).
+  # Migrate old repo links before linkGeneration removes them. Local config is
+  # writable; defaults use a three-way merge that preserves runtime overrides.
+  home.activation.personalAgentConfig = lib.hm.dag.entryBetween
+    [ "linkGeneration" ] [ "writeBoundary" ] ''
+      run ${pkgs.python3.withPackages (ps: [ ps.tomli-w ])}/bin/python3 \
+        ${./bin/sync-personal-agent-config.py} --root "${homeDirectory}/rig" \
+        --home "${homeDirectory}" --apply
+    '';
+
+  # Instructions, scripts and skills stay linked to their authored sources.
+  # Runtime config files are deliberately absent from home.file.
   home.file = let
     repoFile = path: config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/rig/${path}";
   in {
     ".claude-personal/CLAUDE.md".source = repoFile "claude/CLAUDE.md";
-    ".claude-personal/settings.json".source = repoFile "claude/settings.json";
     ".claude-personal/statusline.sh".source = repoFile "claude/statusline.sh";
     ".claude-personal/hooks".source = repoFile "claude/hooks";
     ".claude-shared/prose-rules.md".source = repoFile "claude-shared/prose-rules.md";
     ".claude-personal/skills".source = repoFile "claude-shared/skills";
     ".codex-personal/AGENTS.md".source = repoFile "codex/AGENTS.md";
-    ".codex-personal/config.toml".source = repoFile "codex/config.toml";
-    ".codex-personal/hooks.json".source = repoFile "codex/hooks.json";
     ".codex-personal/skills".source = repoFile "codex/skills";
     ".gitconfig-personal".source = ./git/gitconfig-personal;
     "bin/agents-gc" = { source = ./bin/agents-gc; executable = true; };

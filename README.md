@@ -151,6 +151,20 @@ Portability caveat: some tracked agent config (`claude/settings.json`,
 `codex/hooks.json`) contains machine-absolute home paths; edit those when
 setting up a machine with a different username.
 
+Personal `codex/config.toml`, `claude/settings.json`, and `codex/hooks.json`
+are defaults, not live runtime files. Home Manager copies/merges them into
+local, owner-writable files in `~/.codex-personal` and `~/.claude-personal`.
+Project trust, onboarding state, hook approvals, and generated environment
+context stay local. Work profiles remain under the private overlay and AIX.
+
+On later activations, `bin/sync-personal-agent-config.py` applies default
+changes only where the local setting still matches its previous default.
+Local additions, edits, and deletions win; arrays are treated as whole values.
+To share a runtime preference across machines, edit the corresponding tracked
+default deliberately. Previous defaults and recoverable pre-change copies live
+under `~/.local/state/rig-agent-config/`. Migrating old repository symlinks
+preserves their current contents before detaching them.
+
 ## Bootstrap a new machine
 
 Requires Nix (with flakes) installed and permitted on the target machine.
