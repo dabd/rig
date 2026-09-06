@@ -16,7 +16,10 @@ license: Apache-2.0
 
 # Documentation Audit Cycle
 
-You are running an iterative deep audit of documentation or planning files. The cycle repeats until a clean pass — no exceptions, no shortcuts.
+Audit the requested documentation or planning files. For an audit-only request,
+report findings without editing the documents. When fixes are authorized, fix
+issues within scope and repeat the relevant checks until the audit is clean or
+a concrete blocker requires user input.
 
 **Target**: $ARGUMENTS
 
@@ -45,7 +48,9 @@ Resolve `$ARGUMENTS` into a concrete list of files. The input can be an explicit
 
 Read `references/resolve-targets.md` for the full resolution logic including natural language parsing, cross-reference expansion, and the confirmation flow.
 
-Present the resolved file list and wait for user confirmation before proceeding.
+Present the resolved file list and proceed when it follows the user's request.
+Ask only if the target is materially ambiguous or expansion would exceed the
+authorized scope. Do not request confirmation of an explicit path or glob.
 
 ### Load Audit State
 
@@ -55,7 +60,9 @@ After resolving the target directory, check for `.audit-state.json` in that dire
 
 ## The Audit Cycle
 
-This is a **loop**. Execute steps 1–4 repeatedly. The cycle terminates ONLY when Step 1 produces zero Critical, High, or Medium issues. Fixing issues does NOT count as a clean pass — you must re-run Step 1 afterward.
+When fixes are authorized, execute steps 1-4 repeatedly until Step 1 produces
+zero Critical, High, or Medium issues. Verify changes with the relevant checks
+after each fix. For an audit-only request, finish after reporting findings.
 
 ```
 ┌─────────────────────────────────────────┐
@@ -114,7 +121,10 @@ If the audit scope contains a mix (e.g., plan docs that include API specs), load
 
 Present findings grouped by severity, then by file. Read `references/report-format.md` for the severity definitions and report template.
 
-If the audit identified ambiguities that cannot be resolved by reading the files, present each question with context and options. Wait for the user to respond before proceeding. Do not ask questions about Low-severity issues.
+If unresolved ambiguities materially affect the result, present focused
+questions with context. Continue independent checks and authorized fixes while
+waiting. Do not ask questions about Low-severity issues or request approval
+again for fixes already authorized.
 
 ### Filter Against Audit State
 
@@ -124,11 +134,14 @@ If there are **zero Critical, High, or Medium issues**, skip to Step 4.
 
 ## Step 3: Fix Issues
 
-Fix all Critical, High, and Medium issues from the report. Track which files you modify — this drives the incremental scope for the next cycle.
+When fixes are authorized, fix all Critical, High, and Medium issues from the
+report within scope. Track modified files for the next incremental pass.
 
 1. Make the change in the file
 2. Verify the fix doesn't introduce new inconsistencies with other files
-3. If a fix in one file requires a cascading change in another, make both changes
+3. Make cascading changes in other files only when their edits are within the
+   authorized scope. Otherwise prepare the proposed change and request the
+   missing authorization while continuing independent work.
 
 **Do NOT fix Low-severity issues.** They are informational only.
 
@@ -150,7 +163,10 @@ Report the final state:
 
 ### Save Audit State
 
-After reporting, write or update `.audit-state.json` in the target directory. Read `references/audit-state.md` (Saving State section) for the full procedure — it covers checksums, Low issue persistence, dismissed entry carryforward, and fix counting.
+When fixes or audit-state recording are authorized, write or update
+`.audit-state.json` in the target directory. Audit-only requests do not authorize
+this write. Read `references/audit-state.md` (Saving State section) for checksums,
+Low issue persistence, dismissed entry carryforward, and fix counting.
 
 ---
 
@@ -160,7 +176,10 @@ After reporting, write or update `.audit-state.json` in the target directory. Re
 2. **Never downgrade severity to end the loop.** If something was Medium+ in cycle N, it stays Medium+ unless the user explicitly says otherwise.
 3. **Re-read modified files.** On cycle 2+, re-read every file in the incremental scope (modified + cross-references). Do not rely on memory — re-read from disk. Files not in the incremental scope can be skipped.
 4. **Batch fixes by file.** Make all changes to a file at once rather than editing it repeatedly.
-5. **Track cycle count.** If you reach `max_cycles` (default 5) without converging, pause and ask the user — you may be oscillating between competing fixes.
+5. **Track cycle count.** At `max_cycles` (default 5), reassess why checks have
+   not converged. Change the diagnostic approach when attempts repeat without
+   new evidence. Ask only if progress needs a user decision, information, or
+   authority; a cycle count alone does not require a pause.
 6. **No cosmetic fixes.** Fix exactly what was flagged at Medium+ severity. Nothing more.
 7. **Respect exclusions.** If config specifies `exclude` patterns, skip matching files.
 

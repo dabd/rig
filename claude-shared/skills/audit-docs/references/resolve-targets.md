@@ -32,11 +32,10 @@ When the input is descriptive rather than a path:
      - path/to/file1.md
      - path/to/file2.md
      - ...
-
-   Proceed with audit? [Y/n]
    ```
 
-4. **Wait for confirmation.** The user may want to add or remove files from the list.
+4. **Proceed within the requested scope.** Ask only when plausible targets
+   differ materially or the proposed audit would exceed the user's request.
 
 ## Cross-Reference Expansion
 
@@ -49,4 +48,5 @@ Added N cross-referenced files:
   - ...
 ```
 
-The final confirmed file list is the **audit scope** for all subsequent cycles.
+The resolved file list is the **audit scope** for subsequent cycles. Reading a
+referenced file to verify a claim does not authorize editing that file.
