@@ -6,13 +6,19 @@ description: Analyze framing when asked how wording or grammar changes persuasio
 # Rhetoricize
 
 Identify how wording, agency, and emphasis affect an argument's reception.
+Establish the core thesis, supporting evidence, and epistemic posture. Infer
+the audience and context, since a word's charge varies between communities.
 Separate the author's asserted facts, uncertainties, and non-claims into a
 small fact ledger. Attribute the source and your own alternative wording clearly.
 
-Try only the transformations needed to expose the important choices: changed
-connotation with the same stance, a defensible opposing evaluation with the
-same facts, or a neutral version. Keep the source's uncertainty and factual
-quantifiers fixed; changing 'some' to 'many' can change the claim.
+Consider changed connotation with the same stance, a defensible opposing
+evaluation with the same facts, and a neutral baseline. Use enough of this
+comparison to identify the important choice, without printing redundant passes.
+Track the affected axis, such as agency, competence, status, risk, or novelty;
+framing has more dimensions than positive/negative sentiment. Inspect grammar
+as well as synonyms: agent suppression, passive voice, nominalization, and
+foregrounding can move perceived responsibility. Keep the source's uncertainty
+and factual quantifiers fixed; changing 'some' to 'many' can change the claim.
 
 Prefer the clearest informative transformation and explain the words or
 grammatical choices responsible. Show the full set only when requested.

@@ -27,3 +27,10 @@ for a conceptual mapping request or assign a universal mapping-quality score.
 Deliver the applicable formulas, assumptions, a worked transfer, and the
 breakpoints that matter. Use a formula shelf or metric sheet only if the user
 needs a reusable quantitative artifact.
+
+For an operational recommendation, name an observable outcome, comparison
+baseline, and important counter-metric even when running an evaluation is out
+of scope. Where a prediction needs fitted parameters, state the missing data
+and estimation approach; do not imply that an uncalibrated example is ready
+for deployment. Avoid inferring waiting-time tails or percentage improvements
+from a conservation identity alone.

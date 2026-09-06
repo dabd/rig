@@ -10,6 +10,11 @@ a reader should interpret the supplied text.
 
 Ground each candidate in a quoted passage, a logical dependency, or a concrete
 expectation of the document's genre. Explain what is absent and why it matters.
+Look for an abrupt pivot, weakened commitment, suppressed alternative frame,
+or a line of reasoning that stops before its expected conclusion. Reconstruct
+the missing continuation in neutral terms and show which textual choice it
+would explain. Prioritize these specific mismatches over a generic checklist
+of things the document could have mentioned.
 Distinguish a premise required for the argument from an optional continuation
 that merely seems plausible.
 

@@ -13,6 +13,18 @@ user's requested purpose calls for it, and label the resulting deliverable.
 | Reframe a question | Different level, representation, role, or timeframe | Explain what the new frame preserves and excludes. |
 | Examine strategy | Incentive change or reflexive response | Trace who responds and why the outcome changes. |
 
+Useful ways to find a challenge include changing the reference class or
+examining subgroups, comparing average gains with repeated exposure to ruin,
+testing distribution shifts, and separating short- from long-term effects.
+Choose those that bear on the claim; no fixed combination of axes is required.
+
+For reparameterization, express the same system in a different representation
+and show the constraint or alternative conclusion it exposes. Changing symbols
+alone provides no opposition. A lived-experience counter can reveal a missing
+subgroup or perspective; use supplied testimony or label a hypothetical, and
+do not generalize one experience into a population-level refutation. A foil
+clarifies which cases or questions the original claim never covered.
+
 A rival recommendation accepts the established facts but changes which
 criterion determines the choice. A rival technical account proposes another
 mechanism and a discriminating test. A counterexample may be just one input
@@ -21,3 +33,6 @@ and its outcome; it does not need a complete alternative worldview.
 Use the strongest defensible input position. Avoid attacking early-draft
 weaknesses when the intended claim is clear. Keep tone appropriate to the
 request; pressing on personal identity is not a routine reasoning step.
+Report the failure mode, crux, and discriminating evidence in a form suited to
+the chosen operation, including where an observation can qualify a claim but
+cannot refute it.
