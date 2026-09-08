@@ -147,6 +147,13 @@ to a versioned plugin-cache directory. All shared policy remains personal-safe;
 work-specific tools and configuration stay in the private overlay. The overlay
 may reference this repo (bootstrap pins it at `~/rig`), never the reverse.
 
+Containment follows the satellite-tool model. Its engine, source contracts and
+recovery implementation live independently; this repo provides only the
+`rig-contained-source` maintenance wrapper and installation integration. Private
+policy overlays and local state remain separate. See [containment integration](docs/contained.md).
+No containment runtime or normal agent-command cutover is activated by this
+wrapper.
+
 Portability caveat: some tracked agent config (`claude/settings.json`,
 `codex/hooks.json`) contains machine-absolute home paths; edit those when
 setting up a machine with a different username.

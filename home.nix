@@ -114,5 +114,6 @@
     ".gitconfig-personal".source = ./git/gitconfig-personal;
     "bin/agents-gc" = { source = ./bin/agents-gc; executable = true; };
     "bin/rig-update-check" = { source = ./bin/rig-update-check; executable = true; };
+    "bin/rig-contained-source" = { source = ./bin/rig-contained-source; executable = true; };
   };
 }
