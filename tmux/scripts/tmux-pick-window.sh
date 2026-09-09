@@ -17,7 +17,7 @@ sel="$(
       -F '#{?@lf,#{@lf},0} #{window_index} #{window_name}' \
     | sort -rn \
     | sed 's/^[0-9]* //' \
-    | fzf --reverse --no-multi \
+    | fzf --reverse --no-multi --cycle \
         --header="switch window in $session (MRU)" \
         --preview='tmux capture-pane -ep -t '"$session"':{1} 2>/dev/null | tail -n 60' \
         --preview-window='right,60%,wrap'
