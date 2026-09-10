@@ -22,7 +22,5 @@ Optional companion/cache roots are private entries in
 required. Ordinary native commands are still available; use `jig` for
 protected sessions.
 
-The old `contained` command remains a compatibility alias for saved SOS records.
-
 The old `rig-contained-source` helper and staged source preparation are retired
 experiments. They are not part of the current product or its startup path.
