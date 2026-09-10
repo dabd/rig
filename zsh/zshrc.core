@@ -46,35 +46,8 @@ tmux_extract_window() {
     echo "Attach with: tmux attach-session -t $session_name"
 }
 
-# Personal Claude Code profile (subscription; separate config/state dirs).
-function claude-personal {
-  CLAUDE_CONFIG_DIR="$HOME/.claude-personal" \
-  CODEX_HOME="$HOME/.codex-personal" \
-  CLAUDE_CODE_USE_BEDROCK=0 \
-  command claude "$@"
-}
-
-# Find the real codex binary, skipping the ~/.local/bin shim.
-_codex_real() {
-  local dir candidate
-  for dir in ${(s.:.)PATH}; do
-    [[ "$dir" == "$HOME/.local/bin" ]] && continue
-    candidate="$dir/codex"
-    if [[ -x "$candidate" ]]; then
-      print -r -- "$candidate"
-      return 0
-    fi
-  done
-
-  echo "Real Codex binary not found on PATH outside ~/.local/bin" >&2
-  return 1
-}
-
-function codex-personal {
-  local real_codex
-  real_codex="$(_codex_real)" || return 1
-  CODEX_HOME="$HOME/.codex-personal" "$real_codex" "$@"
-}
+# Profile defaults use Jig; the work overlay adds its native hooks afterward.
+source "$HOME/rig/zsh/agent-launchers.zsh"
 
 # sos = Save Our Sessions. After a tmux crash there is no live Claude to ask,
 # so recovery is a plain command: print the resume command per restored pane
