@@ -164,14 +164,11 @@ local, owner-writable files in `~/.codex-personal` and `~/.claude-personal`.
 Project trust, onboarding state, hook approvals, and generated environment
 context stay local. Work profiles remain under the private overlay and AIX.
 
-`zsh/agent-launchers.zsh` routes new `codex-personal` and `claude-personal`
-sessions through Jig. The private overlay uses the same dispatcher for work
-profiles. Native hooks retain profile authentication and state; administrative
-commands such as login, help and plugin management stay available directly.
-Install a Jig version supporting `_jig_native_<profile>` before activating
-these defaults. A recursion guard fails if the routing versions do not match.
-Use `--workspace PATH` from a parent directory. Existing shells need a reload
-to use the new functions; running agents keep their current session.
+`zsh/agent-launchers.zsh` starts `codex-personal` and `claude-personal` through
+their native profile hooks, preserving authentication and state. Automatic jig
+routing is disabled; explicit `jig <profile>` commands remain available.
+New shells load the change automatically. Reload an existing idle shell with
+`source ~/.zshrc`; running agents keep their current session.
 
 On later activations, `bin/sync-personal-agent-config.py` applies default
 changes only where the local setting still matches its previous default.

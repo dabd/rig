@@ -72,5 +72,6 @@ _jig_default() {
   JIG_DISPATCHING_PROFILE="$jig_profile" command jig "$jig_profile" "$@"
 }
 
-function claude-personal { _jig_default claude-personal "$@"; }
-function codex-personal { _jig_default codex-personal "$@"; }
+# jig remains available explicitly; ordinary launches use the native profiles.
+function claude-personal { _jig_native_claude-personal "$@"; }
+function codex-personal { _jig_native_codex-personal "$@"; }

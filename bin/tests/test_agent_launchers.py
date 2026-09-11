@@ -21,6 +21,8 @@ function _jig_native_claude { command claude "$@"; }
 function _jig_native_codex { command codex "$@"; }
 function claude { _jig_default claude "$@"; }
 function codex { _jig_default codex "$@"; }
+function claude-personal { _jig_default claude-personal "$@"; }
+function codex-personal { _jig_default codex-personal "$@"; }
 "$@"
 '''
 
@@ -60,7 +62,7 @@ raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
         calls = [json.loads(line) for line in self.log.read_text().splitlines()] if self.log.exists() else []
         return result, calls
 
-    def test_sessions_route_all_profiles_through_jig_without_changing_argv_or_cwd(self):
+    def test_explicit_dispatch_routes_all_profiles_through_jig_without_changing_argv_or_cwd(self):
         cases = ([], ["resume", "session-id"], ["--workspace", "task with spaces", "hello"],
                  ["--", "--help", "", "literal; $(no-command)"], ["--model", "fixture", "help"])
         for profile in PROFILES:
@@ -73,6 +75,20 @@ raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
                     self.assertEqual(calls[0]["args"], [profile, *args])
                     self.assertEqual(calls[0]["cwd"], str(self.cwd))
                     self.assertEqual(calls[0]["env"]["JIG_DISPATCHING_PROFILE"], profile)
+
+    def test_personal_defaults_launch_natively_without_jig(self):
+        (self.bin / "jig").unlink()
+        for profile in ("claude-personal", "codex-personal"):
+            for args in ([], ["resume", "session-id"], ["argument with spaces", ""]):
+                with self.subTest(profile=profile, args=args):
+                    result, calls = self.run_shell([profile, *args],
+                                                   script='source "$1"; shift; "$@"')
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(len(calls), 1)
+                    self.assertEqual(calls[0]["command"], profile.split("-")[0])
+                    self.assertEqual(calls[0]["args"], args)
+                    self.assertEqual(calls[0]["cwd"], str(self.cwd))
+                    self.assertIsNone(calls[0]["env"]["JIG_DISPATCHING_PROFILE"])
 
     def test_only_explicit_first_argument_admin_commands_use_native_hooks(self):
         for profile in PROFILES:
