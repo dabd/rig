@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/python3 "$HOME/rig/bin/agent-runtime.py" launch --personal claude -- "$@"

@@ -117,5 +117,8 @@
     "bin/agents-gc" = { source = ./bin/agents-gc; executable = true; };
     "bin/rig-update-check" = { source = ./bin/rig-update-check; executable = true; };
     "bin/rig-contained-source" = { source = ./bin/rig-contained-source; executable = true; };
+    "bin/agent-runtime".source = repoFile "bin/agent-runtime.py";
+    "bin/codex-personal".source = repoFile "bin/codex-personal";
+    "bin/claude-personal".source = repoFile "bin/claude-personal";
   };
 }

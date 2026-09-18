@@ -170,6 +170,70 @@ routing is disabled; explicit `jig <profile>` commands remain available.
 New shells load the change automatically. Reload an existing idle shell with
 `source ~/.zshrc`; running agents keep their current session.
 
+### Agent installations and upgrades
+
+Codex uses one Homebrew cask installation. Claude uses its native installation
+at `~/.local/bin/claude`; Anthropic owns that symlink and its version directory.
+Both personal and optional overlay profiles use these shared binaries while
+keeping their configuration, authentication, sessions, and selected skills in
+separate profile directories. Updating a binary updates every profile using it.
+
+On macOS, install [Homebrew](https://brew.sh), then run:
+
+```sh
+~/rig/bin/agent-runtime.py install
+~/rig/bin/agent-runtime.py check
+```
+
+The installer adds the Codex cask and, if absent, installs Claude through
+Anthropic's native installer. Existing installations are checked without being
+replaced. Native Claude keeps automatic updates enabled on the `latest` channel.
+Nix installs the launchers and defaults; it does not own either agent binary.
+The Codex cask installation step requires macOS.
+
+After pulling changes to an existing `~/rig` checkout, run
+`home-manager switch --flake ~/rig#default --impure` to install the helper and
+personal launcher links, then reload an idle shell with `source ~/.zshrc`.
+The focused `agent-runtime.py install` command installs the agent binaries;
+it does not activate Home Manager configuration. `check` also reports the
+personal Claude update channel and environment settings that disable updates.
+
+Use these commands for upgrades:
+
+```sh
+~/rig/bin/agent-runtime.py update codex
+~/rig/bin/agent-runtime.py update claude
+~/rig/bin/agent-runtime.py update all
+```
+
+Codex upgrades call the explicit Homebrew executable with `upgrade --cask
+codex`. Claude upgrades use its native executable and updater. Maintenance runs
+from a temporary directory with an explicit profile. The helper defaults to the
+personal profile; an overlay launcher retains its own profile. Personal
+`update` and `upgrade` commands also route through this helper. Existing npm
+copies are not removed automatically; retire them after checking the managed
+launchers, using the npm prefix that owns each copy.
+
+The helper resolves Homebrew at `/opt/homebrew/bin/brew` or
+`/usr/local/bin/brew`, then Codex at the same prefix's `bin/codex`. It never
+searches `PATH` for an agent. An optional local
+`~/.config/rig/agent-installations.json` can set absolute `brew`, `codex`, and
+`claude` paths. Installation, upgrades, and `check` verify that the Codex path
+belongs to the selected Homebrew prefix and cask. Claude's configured path must
+remain its vendor-managed stable command, so subsequent native updates remain
+visible.
+
+Personal launchers pin both `CODEX_HOME=~/.codex-personal` and
+`CLAUDE_CONFIG_DIR=~/.claude-personal`. Their child processes inherit
+`RIG_AGENT_PROFILE=personal` and personal command wrappers ahead of `PATH`.
+An optional private overlay can supply `~/.config/rig/agent-policy.json` with a
+`personal_unset_env` list of provider variables to remove. Those values remain
+outside this public repository. Personal sessions can read and operate in any
+directory available to the user. Launchers preserve working directories and
+arguments, including project-scoped MCP and plugin commands. Only binary
+installation and upgrades run from a neutral location. Explicit Jig entry
+points retain their existing behavior.
+
 On later activations, `bin/sync-personal-agent-config.py` applies default
 changes only where the local setting still matches its previous default.
 Local additions, edits, and deletions win; arrays are treated as whole values.

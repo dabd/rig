@@ -46,7 +46,7 @@ tmux_extract_window() {
     echo "Attach with: tmux attach-session -t $session_name"
 }
 
-# Profile defaults use Jig; the work overlay adds its native hooks afterward.
+# Personal launchers use managed binaries; the optional overlay adds its hooks.
 source "$HOME/rig/zsh/agent-launchers.zsh"
 
 # sos = Save Our Sessions. After a tmux crash there is no live Claude to ask,

@@ -49,9 +49,13 @@ with open(os.environ["SPY_LOG"], "a") as output:
 raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
 ''')
             spy.chmod(0o700)
-        # HOME is retained solely to verify pinned profile paths. No test
-        # reads or changes native profile files or sources the user's zshrc.
-        self.env = {"HOME": os.environ["HOME"], "PATH": str(self.bin), "ZDOTDIR": str(self.root),
+        self.home = self.root / "home"
+        self.home.mkdir()
+        (self.home / "rig").symlink_to(MODULE.parents[1])
+        config = self.home / ".config/rig/agent-installations.json"
+        config.parent.mkdir(parents=True)
+        config.write_text(json.dumps({name: str(self.bin / name) for name in ("codex", "claude")}))
+        self.env = {"HOME": str(self.home), "PATH": str(self.bin), "ZDOTDIR": str(self.root),
                     "SPY_LOG": str(self.log), "CODEX_HOME": "/inherited-codex",
                     "CLAUDE_CONFIG_DIR": "/inherited-claude", "CLAUDE_CODE_USE_BEDROCK": "1"}
 
@@ -94,6 +98,8 @@ raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
         for profile in PROFILES:
             admins = CLAUDE_ADMIN if profile.startswith("claude") else CODEX_ADMIN
             for first in admins:
+                if profile.endswith("-personal") and first in ("update", "upgrade"):
+                    continue  # Managed update routing has its own runtime tests.
                 with self.subTest(profile=profile, first=first):
                     args = [first, *(["list"] if first == "mcp" and profile.startswith("claude") else []),
                             "argument with spaces", "", "--literal"]
@@ -170,14 +176,10 @@ raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
                 observed = calls[0]["env"]
                 self.assertEqual(observed["HOME"], self.env["HOME"])
                 self.assertEqual(observed["CODEX_HOME"], self.env["HOME"] + "/.codex-personal")
-                if profile.startswith("claude"):
-                    self.assertEqual(observed["CLAUDE_CONFIG_DIR"], self.env["HOME"] + "/.claude-personal")
-                    self.assertEqual(observed["CLAUDE_CODE_USE_BEDROCK"], "0")
-                else:
-                    self.assertEqual(observed["CLAUDE_CONFIG_DIR"], "/inherited-claude")
-                    self.assertEqual(observed["CLAUDE_CODE_USE_BEDROCK"], "1")
+                self.assertEqual(observed["CLAUDE_CONFIG_DIR"], self.env["HOME"] + "/.claude-personal")
+                self.assertEqual(observed["CLAUDE_CODE_USE_BEDROCK"], "0")
 
-    def test_codex_resolver_skips_personal_shim_directory(self):
+    def test_codex_resolver_uses_managed_path_and_does_not_fall_back(self):
         result, calls = self.run_shell(["_jig_native_codex-personal", "--help"],
                                        env={"PATH": self.env["HOME"] + "/.local/bin:" + str(self.bin)})
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -185,7 +187,7 @@ raise SystemExit(int(os.environ.get("SPY_EXIT", "0")))
         (self.bin / "codex").unlink()
         result, calls = self.run_shell(["_jig_native_codex-personal", "--help"])
         self.assertEqual(result.returncode, 1)
-        self.assertIn("Real Codex binary not found", result.stderr)
+        self.assertIn("Managed executable missing", result.stderr)
         self.assertEqual(calls, [])
 
 

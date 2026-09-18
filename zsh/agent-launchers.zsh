@@ -1,32 +1,16 @@
 # Native profile hooks retain their original authentication and state behavior.
 # Jig calls these hooks after applying its boundary, avoiding default recursion.
 function _jig_native_claude-personal {
-  CLAUDE_CONFIG_DIR="$HOME/.claude-personal" \
-  CODEX_HOME="$HOME/.codex-personal" \
-  CLAUDE_CODE_USE_BEDROCK=0 \
-  command claude "$@"
+  /usr/bin/python3 "$HOME/rig/bin/agent-runtime.py" launch --personal claude -- "$@"
 }
 
-# Find the real codex binary, skipping the ~/.local/bin shim.
+# Kept for callers that need the managed Codex path.
 _codex_real() {
-  local dir candidate
-  for dir in ${(s.:.)PATH}; do
-    [[ "$dir" == "$HOME/.local/bin" ]] && continue
-    candidate="$dir/codex"
-    if [[ -x "$candidate" ]]; then
-      print -r -- "$candidate"
-      return 0
-    fi
-  done
-
-  echo "Real Codex binary not found on PATH outside ~/.local/bin" >&2
-  return 1
+  /usr/bin/python3 "$HOME/rig/bin/agent-runtime.py" path codex
 }
 
 function _jig_native_codex-personal {
-  local real_codex
-  real_codex="$(_codex_real)" || return 1
-  CODEX_HOME="$HOME/.codex-personal" "$real_codex" "$@"
+  /usr/bin/python3 "$HOME/rig/bin/agent-runtime.py" launch --personal codex -- "$@"
 }
 
 _jig_default() {
@@ -57,7 +41,7 @@ _jig_default() {
       ;;
     codex|codex-personal)
       case "${1-}" in
-        login|logout|mcp|features|completion|help|-h|--help|-V|--version)
+        login|logout|mcp|features|completion|help|-h|--help|-V|--version|update|upgrade)
           "$native_hook" "$@"
           return $?
           ;;
@@ -75,3 +59,11 @@ _jig_default() {
 # jig remains available explicitly; ordinary launches use the native profiles.
 function claude-personal { _jig_native_claude-personal "$@"; }
 function codex-personal { _jig_native_codex-personal "$@"; }
+
+# Child shells retain their selected profile after version managers alter PATH.
+if [[ "${RIG_AGENT_PROFILE-}" == personal ]]; then
+  export RIG_AGENT_PERSONAL_BIN="$HOME/rig/bin/personal"
+  export PATH="$RIG_AGENT_PERSONAL_BIN:$PATH"
+  function codex { _jig_native_codex-personal "$@"; }
+  function claude { _jig_native_claude-personal "$@"; }
+fi
