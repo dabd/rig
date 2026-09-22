@@ -42,9 +42,6 @@ export NVM_DIR="$HOME/.nvm"
 # Terraform: one shared provider cache instead of ~500MB per project dir.
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
-# Build for amd64 by default on Apple silicon, matching the deploy targets.
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
-
 tmux_extract_window() {
     local window_num=${1:-$(tmux display-message -p '#I')}
     local session_name="extracted_${window_num}_$(date +%s)"

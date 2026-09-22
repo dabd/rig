@@ -12,10 +12,10 @@
 # clears any inherited value first, so gh is the only one consulted.
 [credential "https://github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [diff]
 	tool = intellij
 [difftool "intellij"]
