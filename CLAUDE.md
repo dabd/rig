@@ -35,9 +35,13 @@ new Elisp package, add the `use-package` form, `switch`, then let elpaca install
 on next launch.
 
 The same edit-then-switch loop applies to the other store-symlinked config
-(`tmux/`, `zsh/`, `ghostty/`, `git/`). The agent profiles (`claude/`, `codex/`)
-are writable out-of-store symlinks instead: edits there are live immediately,
-no switch needed, and runtime changes by the CLIs show up as git diffs.
+(`tmux/`, `zsh/`, `ghostty/`, `git/`). Agent instructions, hooks, and skills remain
+linked to their authored sources. Personal `claude/settings.json`,
+`codex/config.toml`, and `codex/hooks.json` are tracked defaults that Home Manager
+merges into writable local files in `~/.claude-personal` and `~/.codex-personal`.
+The merge preserves local overrides, including model selections. To change an
+existing local selection as well as the default for new installations, update
+the tracked default and explicitly select the model in the personal runtime.
 
 ## Conventions and traps
 
