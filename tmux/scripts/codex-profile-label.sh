@@ -13,7 +13,7 @@ for pid in $pids; do
         { for (i = 1; i <= NF; i++) if ($i == expected) found = 1 }
         END { exit !found }
       '; then
-    printf 'personal \n'
+    printf ' [P]\n'
     exit 0
   fi
 done
