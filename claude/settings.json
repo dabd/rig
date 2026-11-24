@@ -8,7 +8,7 @@
       "WebFetch"
     ]
   },
-  "model": "fable[1m]",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -76,6 +76,11 @@
     }
   },
   "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "tui": "fullscreen",
   "theme": "dark",
   "agentPushNotifEnabled": true

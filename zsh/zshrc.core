@@ -21,12 +21,19 @@ export PATH="$HOME/.tgenv/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+# Coursier (Scala) installs its binaries here. Appended, not prepended, so the
+# Nix profile keeps priority.
+export PATH="$PATH:$HOME/Library/Application Support/Coursier/bin"
 
 HISTSIZE=10000
 SAVEHIST=10000
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# sbt needs more heap and a deeper stack than the JVM defaults for Scala builds.
+export SBT_OPTS="-Xms2G -Xmx8G -Xss8M"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
