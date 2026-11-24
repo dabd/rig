@@ -111,8 +111,14 @@
     ".claude-personal/skills".source = repoFile "claude-shared/skills";
     ".codex-personal/AGENTS.md".source = repoFile "codex/AGENTS.md";
     ".codex-personal/skills".source = repoFile "codex/skills";
+    ".config/jig/profiles/codex-personal.json".source = repoFile "jig/personal.json";
+    ".config/jig/profiles/claude-personal.json".source = repoFile "jig/personal.json";
     ".gitconfig-personal".source = ./git/gitconfig-personal;
     "bin/agents-gc" = { source = ./bin/agents-gc; executable = true; };
     "bin/rig-update-check" = { source = ./bin/rig-update-check; executable = true; };
+    "bin/rig-contained-source" = { source = ./bin/rig-contained-source; executable = true; };
+    "bin/agent-runtime".source = repoFile "bin/agent-runtime.py";
+    "bin/codex-personal".source = repoFile "bin/codex-personal";
+    "bin/claude-personal".source = repoFile "bin/claude-personal";
   };
 }

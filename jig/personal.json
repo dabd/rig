@@ -1,0 +1,8 @@
+{
+  "workspace_roots": [
+    "~/projects/mystuff/agents"
+  ],
+  "cache_root": "~/projects/mystuff/agents",
+  "backup_root": "~/projects/mystuff/agents/.backups",
+  "writable_paths": []
+}

@@ -38,5 +38,7 @@ else
 fi
 
 python3 "$repo/bin/install-agent-skills.py" --apply
+/usr/bin/python3 "$repo/bin/agent-runtime.py" install
+/usr/bin/python3 "$repo/bin/agent-runtime.py" check
 
 echo "done. work machines: clone the work overlay repo and run its install.sh."

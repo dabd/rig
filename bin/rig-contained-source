@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Delegate offline source maintenance to the independently installed tool.
+set -euo pipefail
+
+tool="$(type -P contained-source || true)"
+if [[ -z "$tool" ]]; then
+  printf '%s\n' 'contained-source is not installed. See ~/rig/docs/contained.md.' >&2
+  exit 127
+fi
+exec "$tool" "$@"
