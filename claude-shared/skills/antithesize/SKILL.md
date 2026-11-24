@@ -1,9 +1,13 @@
 ---
 name: antithesize
-description: Develop a standalone rival thesis or another requested form of opposition, including falsification, robustness testing, or reframing.
+description: Develop a standalone rival thesis when the user asks for an opposing position or alternative account. Do not select for code review, engineering audits, or project evaluations, including adversarial reviews, unless the user names this skill.
 ---
 
 # Antithesize
+
+Handle code reviews, engineering audits, and project evaluations directly unless
+the user explicitly names this skill. Requests to review adversarially, challenge
+a design, or assess whether a project is worth building do not invoke it.
 
 Match the operation to the user's purpose. Default to a rival thesis for an
 opposing position. For falsification, robustness testing, or a broader menu of
