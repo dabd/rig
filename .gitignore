@@ -47,3 +47,7 @@ docs/HANDOFF.md
 
 # Superpowers session handoffs - local-only scratchpads, not published
 docs/superpowers/
+
+# Claude Code account-synced skills, written through the out-of-store
+# ~/.claude-personal/skills link. Per-account IDs in the path; never publish.
+claude-shared/skills/synced/
