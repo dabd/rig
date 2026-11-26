@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "CC_SAFETY_NET_STRICT=1 CC_SAFETY_NET_PARANOID_RM=1 \"/Users/dario.abdulrehman/.nvm/versions/node/v24.0.2/bin/node\" \"/Users/dario.abdulrehman/.local/share/cc-safety-net/v1.0.6/node_modules/cc-safety-net/dist/bin/cc-safety-net.js\" hook --claude-code"
+            "command": "CC_SAFETY_NET_STRICT=1 CC_SAFETY_NET_PARANOID_RM=1 node \"@HOME@/.local/share/cc-safety-net/v1.0.6/node_modules/cc-safety-net/dist/bin/cc-safety-net.js\" hook --claude-code"
           }
         ]
       },
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/dario.abdulrehman/.claude-personal/hooks/guard-gaps.sh"
+            "command": "@HOME@/.claude-personal/hooks/guard-gaps.sh"
           }
         ]
       },
@@ -34,11 +34,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/dario.abdulrehman/.claude-personal/hooks/normalize-unicode.sh"
+            "command": "@HOME@/.claude-personal/hooks/normalize-unicode.sh"
           },
           {
             "type": "command",
-            "command": "/Users/dario.abdulrehman/.claude-personal/hooks/guard-sensitive-files.sh"
+            "command": "@HOME@/.claude-personal/hooks/guard-sensitive-files.sh"
           }
         ]
       }
@@ -65,13 +65,13 @@
     "tacit": {
       "source": {
         "source": "directory",
-        "path": "/Users/dario.abdulrehman/tools/tacit"
+        "path": "@HOME@/tools/tacit"
       }
     },
     "save-our-sessions": {
       "source": {
         "source": "directory",
-        "path": "/Users/dario.abdulrehman/tools/save-our-sessions"
+        "path": "@HOME@/tools/save-our-sessions"
       }
     }
   },

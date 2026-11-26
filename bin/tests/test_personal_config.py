@@ -27,6 +27,14 @@ class PersonalConfigTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             return config.sync(self.root, self.home, apply, detach_only)
 
+    def test_home_placeholder_expands_to_target_home(self):
+        source = self.root / config.FILES[".claude-personal/settings.json"]
+        source.write_text('{"hook": "@HOME@/.claude-personal/hooks/guard.sh"}\n')
+        self.sync()
+        installed = json.loads((self.home / ".claude-personal/settings.json").read_text())
+        self.assertEqual(installed["hook"], f"{self.home}/.claude-personal/hooks/guard.sh")
+        self.assertNotIn("@HOME@", (self.home / ".local/state/rig-agent-config/defaults.json").read_text())
+
     def test_initial_install_and_idempotence(self):
         self.assertGreater(self.sync(False), 0)
         self.assertFalse(self.home.exists())

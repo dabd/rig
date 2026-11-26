@@ -10,7 +10,7 @@ status_line = ["current-dir", "git-branch", "model-with-reasoning", "context-use
 
 [marketplaces.tacit]
 source_type = "local"
-source = "/Users/dario.abdulrehman/tools/tacit"
+source = "@HOME@/tools/tacit"
 
 [plugins."prose@tacit"]
 enabled = true

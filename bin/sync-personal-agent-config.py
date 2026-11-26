@@ -15,6 +15,9 @@ FILES = {
     ".codex-personal/hooks.json": "codex/hooks.json",
 }
 MISSING = object()
+# Tracked defaults name the home directory with this placeholder, so one file
+# serves every machine; sync expands it to the target home.
+HOME_PLACEHOLDER = "@HOME@"
 
 
 def merge(old, new, current):
@@ -72,7 +75,7 @@ def sync(root, home, apply=False, detach_only=False):
             raise ValueError(f"Unexpected profile directory symlink: {path.parent}")
         if path.is_symlink() and path.resolve() != template.resolve():
             raise ValueError(f"Unexpected config symlink: {path}")
-        default_text = template.read_text()
+        default_text = template.read_text().replace(HOME_PLACEHOLDER, str(home))
         defaults[relative] = parse(template, default_text)
         exists = path.exists()
         text = path.read_text() if exists else None
