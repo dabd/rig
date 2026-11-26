@@ -19,9 +19,16 @@ command -v nix >/dev/null 2>&1 || {
 
 # Satellite tools at a stable path.
 mkdir -p "$HOME/tools"
-[ -d "$HOME/tools/save-our-sessions" ] || git clone git@github.com:dabd/save-our-sessions.git "$HOME/tools/save-our-sessions"
-[ -d "$HOME/tools/claude-setup" ] || git clone git@github.com:dabd/claude-setup.git "$HOME/tools/claude-setup"
-[ -d "$HOME/tools/tacit" ] || git clone git@github.com:dabd/tacit.git "$HOME/tools/tacit"
+# Clone once, then fast-forward on every run so pushed tool fixes reach this
+# machine. A dirty or diverged clone only warns: local work is never touched.
+for tool in save-our-sessions claude-setup tacit; do
+  dir="$HOME/tools/$tool"
+  if [ -d "$dir" ]; then
+    git -C "$dir" pull --ff-only --quiet || echo "warning: $dir not updated (local changes or diverged); pull it by hand" >&2
+  else
+    git clone "git@github.com:dabd/$tool.git" "$dir"
+  fi
+done
 
 # oh-my-zsh + the two custom plugins zshrc.core expects.
 [ -d "$HOME/.oh-my-zsh" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
