@@ -32,6 +32,11 @@
       configureFlags = old.configureFlags ++ [ "--enable-jemalloc" ];
     })))
     fzf             # required by the tmux MRU pickers; also revives the tmux-fzf plugin (inert until now)
+    # Runs CC Safety Net for the personal Claude and Codex hooks, which call
+    # ~/.nix-profile/bin/node by path. A bare `node` resolved to whichever Node
+    # came first on PATH (AIX's work Node here, possibly none in a GUI-started
+    # session), and a hook that cannot start fails open.
+    nodejs_24
   ];
 
   # Symlink the plain-Elisp config into place. Nix never generates this;

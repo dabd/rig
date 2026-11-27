@@ -36,11 +36,6 @@ zsh_custom="$HOME/.oh-my-zsh/custom"
 [ -d "$zsh_custom/plugins/zsh-autosuggestions" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$zsh_custom/plugins/zsh-autosuggestions"
 [ -d "$zsh_custom/plugins/zsh-syntax-highlighting" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$zsh_custom/plugins/zsh-syntax-highlighting"
 
-# CC Safety Net, the Bash guard the personal Claude and Codex hooks call.
-# Pinned: hooks/guard-gaps.sh covers the gaps of this exact version.
-safety_net="$HOME/.local/share/cc-safety-net/v1.0.6"
-[ -f "$safety_net/node_modules/cc-safety-net/dist/bin/cc-safety-net.js" ] || npm install --prefix "$safety_net" --no-save --no-audit --no-fund cc-safety-net@1.0.6
-
 python3 "$repo/bin/render-agent-policy.py"
 
 if command -v home-manager >/dev/null 2>&1; then
@@ -48,6 +43,13 @@ if command -v home-manager >/dev/null 2>&1; then
 else
   nix run home-manager/master -- switch --flake "$HOME/rig#default" --impure
 fi
+
+# CC Safety Net, the Bash guard the personal Claude and Codex hooks call.
+# Pinned: hooks/guard-gaps.sh covers the gaps of this exact version.
+# Installed after the switch, with the Node that home-manager provides, because
+# the hooks run it with that same Node and a fresh machine may have no npm yet.
+safety_net="$HOME/.local/share/cc-safety-net/v1.0.6"
+[ -f "$safety_net/node_modules/cc-safety-net/dist/bin/cc-safety-net.js" ] || "$HOME/.nix-profile/bin/npm" install --prefix "$safety_net" --no-save --no-audit --no-fund cc-safety-net@1.0.6
 
 python3 "$repo/bin/install-agent-skills.py" --apply
 /usr/bin/python3 "$repo/bin/agent-runtime.py" install
